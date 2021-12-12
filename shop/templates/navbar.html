@@ -19,7 +19,9 @@
           >Categories</a
         >
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="">Category1</a>
+          {% for category in links %}
+          <a class="dropdown-item" href="">{{category.get_url}}</a>
+          {% endfor %}
           <a class="dropdown-item" href="">Category2</a>
           <a class="dropdown-item" href="">Category3</a>
           <a class="dropdown-item" href="">Category4</a>

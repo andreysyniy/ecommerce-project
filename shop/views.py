@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Category, Product, Cart, CartItem
 from django.contrib.auth.models import Group, User
 from .forms import SingUpForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate, logout
 
 # Create your views here.
 
@@ -92,3 +94,24 @@ def signUpView(request):
     form = SingUpForm()
   return render(request, 'signup.html', {'form': form})
   
+
+def loginView(request):
+  if request.method == 'POST':
+    form = AuthenticationForm(data=request.POST)
+    if form.is_valid():
+      username = request.POST['username']
+      password = request.POST['password']
+      user = authenticate(username=username, password=password)
+      if user is not None:
+        login(request, user)
+        return redirect('home')
+      else:
+        return redirect('signup')
+
+  else:
+    form = AuthenticationForm()
+  return render(request, 'login.html', {'form': form})
+
+def signoutView(request):
+  logout(request)
+  return redirect('login')
